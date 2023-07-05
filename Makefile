@@ -5,7 +5,6 @@ SYSTEM_PYTHON       := $(or $(shell which python3), $(shell which python))
 PYTHON              := $(or $(wildcard $(VENV_PYTHON)), $(SYSTEM_PYTHON))
 POETRY              := $(shell command -v poetry 2> /dev/null)
 
-
 .PHONY: black lint isort
 
 black:
@@ -16,6 +15,11 @@ lint:
 
 isort:
 	$(POETRY) run isort . $(args)
+
+.PHONY: test
+
+test:
+	$(POETRY) run pytest
 
 .PHONY: run
 
