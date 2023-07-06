@@ -5,6 +5,8 @@ SYSTEM_PYTHON       := $(or $(shell which python3), $(shell which python))
 PYTHON              := $(or $(wildcard $(VENV_PYTHON)), $(SYSTEM_PYTHON))
 POETRY              := $(shell command -v poetry 2> /dev/null)
 
+DOCKER_COMPOSE_FILE := docker-compose.yaml
+
 .PHONY: black lint isort
 
 black:
@@ -34,3 +36,18 @@ autoupdate:
 
 all-files:
 	pre-commit run --all-files
+
+.PHONY: build run-app stop clean
+
+build:
+	docker-compose -f $(DOCKER_COMPOSE_FILE) build
+
+run-app:
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up -d
+
+stop:
+	docker-compose -f $(DOCKER_COMPOSE_FILE) down
+
+clean:
+	docker system prune -af --volumes
+	docker network prune -f
