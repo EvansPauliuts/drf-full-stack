@@ -5,6 +5,8 @@ SYSTEM_PYTHON       := $(or $(shell which python3), $(shell which python))
 PYTHON              := $(or $(wildcard $(VENV_PYTHON)), $(SYSTEM_PYTHON))
 POETRY              := $(shell command -v poetry 2> /dev/null)
 
+PRE_COMMIT          := pre-commit
+
 DOCKER_COMPOSE_FILE := docker-compose.yaml
 
 .PHONY: black lint isort
@@ -32,10 +34,10 @@ run:
 .PHONY: autoupdate all-files
 
 autoupdate:
-	pre-commit autoupdate
+	$(PRE_COMMIT) autoupdate
 
 all-files:
-	pre-commit run --all-files
+	$(PRE_COMMIT) run --all-files
 
 .PHONY: build run-app stop clean
 
